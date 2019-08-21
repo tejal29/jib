@@ -298,7 +298,7 @@ subprojects {
     def dependencyProjectClasses = dependencyProject.sourceSets.main.output
     dependencies {
       // add the dependencyProject classes as compileOnly, make it available to tests
-      compileOnly dependencyProjectClasses
+      compileOnly(dependencyProject) { transitive = false }
       testImplementation dependencyProjectClasses
       // add dependencyProject's dependencies as implementation dependencies
       implementation dependencyProject.configurations.implementation.dependencies

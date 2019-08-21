@@ -4,6 +4,8 @@ plugins {
   id 'com.gradle.plugin-publish'
   // for local build/test
   id 'maven'
+  // for eclipse import modifications
+  id 'eclipse'
 }
 
 repositories {
@@ -57,3 +59,13 @@ pluginBundle {
 }
 tasks.publishPlugins.dependsOn integrationTest
 /* RELEASE */
+
+/* ECLIPSE */
+eclipse.classpath.file.whenMerged { cp ->
+  cp.entries.each {
+    if (it.path == "src/test/resources" || it.path == "src/integration-test/resources") {
+      it.excludes += "gradle/projects/"
+    }
+  }
+}
+/* ECLIPSE */
