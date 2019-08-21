@@ -19,17 +19,17 @@ again.
 
 Jib comes as 3 public components:
 
-  - `jib-core`: a library
+  - `jib-core`: a library for building containers
   - `jib-maven-plugin`: a Maven plugin that uses `jib-core` and `jib-plugins-common`
   - `jib-gradle-plugin`: a Gradle plugin that uses `jib-core` and `jib-plugins-common`
 
 And 1 internal component:
 
-  - `jib-plugins-common`: a library with helpers for plugin builders
+  - `jib-plugins-common`: a library with helpers for maven/gradle plugins
 
-The project is configured as a single gradle build, to build the whole
-project run `./gradlew build`, to install into the local maven repository
-run `./gradlew install`.
+The project is configured as a single gradle build. Run `./gradlew build` to build the
+whole project. Run `./gradlew install` to install all public components into the
+local maven repository.
 
 ## Code Reviews
 
@@ -63,33 +63,17 @@ integration tests will create local registries on ports 5000 and 6000.
 
 ## Configuring Eclipse
 
-Jib is a mix of Gradle and Maven projects, however we build everything using one
+Although jib is a mix of Gradle and Maven projects, we build everything using one
 unifed gradle build. There is special code to include some projects directly as
 source, but importing your project should be pretty straight forward.
-
-// TODO: Check with chanseok/brian on how importing into eclipse will work
 
   1. Ensure you have installed the Gradle tooling for Eclipse, called
      _Buildship_ (available from [the Eclipse
      Marketplace](https://marketplace.eclipse.org/content/buildship-gradle-integration)).
-  3. **Import the Gradle projects:** Buildship does [not yet support
+  1. **Import the Gradle project:** Buildship does [not yet support
      Eclipse Smart Import](https://github.com/eclipse/buildship/issues/356).
      Use _File &rarr; Import &rarr; Gradle &rarr; Existing Gradle Project_
      and import `jib`.
-  4. **Turn source-set references to project references:** For each of
-     `jib-plugins-common`, `jib-maven-plugin`, and `jib-gradle-plugin`:
-     - Right-click on the correponding project and select _Properties &rarr; Java Build Path_
-     - Open the _Source_ panel and remove all _linked_ source folders: these are like
-       symbolic links to other locations and appear like
-       `jib-plugins-common/main-java - /path/to/jib-core/src/main/java`.
-       Only folders within the project should remain when complete.
-         - you may wish to remove `jib-gradle-plugin`'s `src/test/resources` and
-           `src/integration-test/resources` too as these contain test projects,
-           and are not linked in as separate projects and so seem have compilation errors
-     - Open the _Projects_ panel and click _Add_ to select the dependencies:
-         - `jib-plugins-common` depends on `jib-core`
-         - `jib-maven-plugin` depends on `jib-core` and `jib-plugins-common`
-         - `jib-gradle-plugin` depends on `jib-core` and `jib-plugins-common`
 
 Note that you will likely need to re-apply these changes whenever
 you refresh or update these projects.
@@ -109,7 +93,7 @@ If developing from within Eclipse with M2Eclipse (the Maven tooling for Eclipse)
 
   1. Modify your test project's `pom.xml` to reference the `-SNAPSHOT`
      version of the `com.google.cloud.tools.jib` plugin.
-  2. Create and launch a _Maven Build_ launch configuration for the
+  1. Create and launch a _Maven Build_ launch configuration for the
      test project, and ensure the _Resolve Workspace artifacts_ is checked.
 
 ### Attaching a debugger
